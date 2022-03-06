@@ -13,7 +13,7 @@ The new extension system doesn't have official documentation yet, but [this blog
 git clone https://github.com/pooroligarch/godot-slicer.git slicer/
 scons
 ```
-When this is done, copy the dynamic library (`libgdslicer.so`/`.dll`) and the extension manifest (`slicer.gdextension`) to your Godot project.
+When this is done, copy the dynamic library (`libgdslicer.so`/`.dll`) and the extension manifest (`slicer.gdextension`) to your Godot project. You can modify the manifest if you want to move the library (default path is `bin/win64/`/`bin/x11`).
 
 ## Using
 After installing the extension a `Slicer` node will now be available under `Node3D`. A `Slicer` instance can then be used to trigger slices of `Mesh` geometry like so:

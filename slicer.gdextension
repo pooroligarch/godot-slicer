@@ -1,0 +1,8 @@
+[configuration]
+
+entry_symbol = "slicer_library_init"
+
+[libraries]
+
+linux.64 = "bin/x11/libgdslicer.so"
+windows.64 = "bin/win64/libgdslicer.dll"
