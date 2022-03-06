@@ -10,7 +10,7 @@ Built as a Godot extension in C++, Slicer is a port of [David Arayan's Ezy-Slice
 The new extension system doesn't have official documentation yet, but [this blog post](https://godotengine.org/article/introducing-gd-extensions) is about as close as it gets. Slicer can be built by cloning the repo next to [the C++ bindings](https://github.com/godotengine/godot-cpp):
 
 ```bash
-git clone git@github.com:pooroligarch/godot-slicer.git slicer/
+git clone https://github.com/pooroligarch/godot-slicer.git slicer/
 scons
 ```
 When this is done, copy the dynamic library (`libgdslicer.so`/`.dll`) and the extension manifest (`slicer.gdextension`) to your Godot project.
