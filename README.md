@@ -1,36 +1,37 @@
 # Godot-Slicer
 
-A port of [Ezy-Slicer](https://github.com/DavidArayan/ezy-slice) for the [Godot game engine](https://godotengine.org/).
+A port of [Ezy-Slicer](https://github.com/DavidArayan/ezy-slice) for the [Godot game engine](https://godotengine.org/). Updated for Godot 4.0 ([original by CJ DiMaggio](https://github.com/cj-dimaggio/godot-slicer)).
 
-![Example Image](/imgs/example.png)
 
 ## About
-Built as a Godot module in C++, Slicer is a port of [David Arayan's Ezy-Slicer](https://github.com/DavidArayan/ezy-slice) Unity plugin (who deserves all credit). It allows for the dynamic slicing of convex meshes along a plane. Built against Godot version 3.2.1.
+Built as a Godot extension in C++, Slicer is a port of [David Arayan's Ezy-Slicer](https://github.com/DavidArayan/ezy-slice) Unity plugin (who deserves all credit). It allows for the dynamic slicing of convex meshes along a plane. Built against Godot version 4.0 alpha.
 
 ## Installing
-Slicer follows the installation procedure defined in the [Godot custom module documentation guide](https://docs.godotengine.org/en/stable/development/cpp/custom_modules_in_cpp.html). It can be built into a compilation of the engine by cloning the repo into Godot's modules folder:
+The new extension system doesn't have official documentation yet, but [this blog post](https://godotengine.org/article/introducing-gd-extensions) is about as close as it gets. Slicer can be built by cloning the repo next to [the C++ bindings](https://github.com/godotengine/godot-cpp):
 
 ```bash
-git clone git@github.com:cj-dimaggio/godot-slicer.git <godot-repo>/modules/slicer
+git clone git@github.com:pooroligarch/godot-slicer.git slicer/
+scons
 ```
+When this is done, copy the dynamic library (`libgdslicer.so`/`.dll`) and the extension manifest (`slicer.gdextension`) to your Godot project.
 
 ## Using
-After building Godot with the Slicer module a `Slicer` node will now be available under `Spatial`. A `Slicer` instance can then be used to trigger slices of `Mesh` geometry like so:
+After installing the extension a `Slicer` node will now be available under `Node3D`. A `Slicer` instance can then be used to trigger slices of `Mesh` geometry like so:
 
 ```gdscript
-extends RigidBody
+extends RigidDynamicBody3D
 
 class_name Sliceable
 
-export(Material) var cross_section_material
-export(Mesh) var mesh_override
+@export var cross_section_material : Material
+@export var mesh_override : Mesh
 
 func _ready():
 	if mesh_override:
 		$MeshInstance.mesh = mesh_override
 
 	# Setup the collision shape to be the mesh's shape
-	var shape = ConvexPolygonShape.new()
+	var shape = ConvexPolygonShape3D.new()
 	shape.points = $MeshInstance.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 	shape.margin = 0.015
 	var owner_id = self.create_shape_owner(self)
@@ -48,23 +49,3 @@ func cut(plane_origin: Vector3, plane_normal: Vector3):
     if sliced.lower_mesh:
         print("Instantiate the lower cut mesh somewhere")
 ```
-
-An example project can also be found at: https://github.com/cj-dimaggio/godot-slicer-example-project
-
-
-## Development
-For development purposes, Slicer can be built as a dynamic library by passing in the `slicer_shared=no` option to SCons and using the `slicer-shared` build alias, such as:
-
-```bash
-scons slicer_shared=yes slicer-shared
-```
-
-which will build a new dynamic library artifact into Godot's `./bin` folder.
-
-There is also a test suite that can be built and run on Unix systems using:
-
-```bash
-scons platform=osx slicer_tests=yes
-```
-
-For more information on the testing framework and development see the [corresponding readme](./tests/README.md).
