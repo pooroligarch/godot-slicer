@@ -17,34 +17,34 @@ struct SurfaceFiller {
     bool has_uvs;
     bool has_uv2s;
 
-    PoolVector<SlicerFace>::Read faces_reader;
-
+    const SlicerFace *faces_reader;
     Array arrays;
-    PoolVector<Vector3> vertexes;
-    PoolVector<Vector3>::Write vertexes_writer;
 
-    PoolVector<Vector3> normals;
-    PoolVector<Vector3>::Write normals_writer;
+    Vector<Vector3> vertices;
+    Vector3 *vertices_writer;
 
-    PoolVector<real_t> tangents;
-    PoolVector<real_t>::Write tangents_writer;
+    Vector<Vector3> normals;
+    Vector3 *normals_writer;
 
-    PoolVector<Color> colors;
-    PoolVector<Color>::Write colors_writer;
+    Vector<real_t> tangents;
+    real_t *tangents_writer;
 
-    PoolVector<real_t> bones;
-    PoolVector<real_t>::Write bones_writer;
+    Vector<Color> colors;
+    Color *colors_writer;
 
-    PoolVector<real_t> weights;
-    PoolVector<real_t>::Write weights_writer;
+    Vector<real_t> bones;
+    real_t *bones_writer;
 
-    PoolVector<Vector2> uvs;
-    PoolVector<Vector2>::Write uvs_writer;
+    Vector<real_t> weights;
+    real_t *weights_writer;
 
-    PoolVector<Vector2> uv2s;
-    PoolVector<Vector2>::Write uv2s_writer;
+    Vector<Vector2> uvs;
+    Vector2 *uvs_writer;
 
-    SurfaceFiller(const PoolVector<SlicerFace> &faces) {
+    Vector<Vector2> uv2s;
+    Vector2 *uv2s_writer;
+
+    SurfaceFiller(const Vector<SlicerFace> &faces) {
         SlicerFace first_face = faces[0];
 
         has_normals = first_face.has_normals;
@@ -55,48 +55,48 @@ struct SurfaceFiller {
         has_uvs = first_face.has_uvs;
         has_uv2s = first_face.has_uv2s;
 
-        faces_reader = faces.read();
+        faces_reader = faces.ptr();
 
         arrays.resize(Mesh::ARRAY_MAX);
 
         int array_length = faces.size() * 3;
-        vertexes.resize(array_length);
-        vertexes_writer = vertexes.write();
+        vertices.resize(array_length);
+        vertices_writer = vertices.ptrw();
 
         // There's gotta be a less tedious way of doing this
         if (has_normals) {
             normals.resize(array_length);
-            normals_writer = normals.write();
+            normals_writer = normals.ptrw();
         }
 
         if (has_tangents) {
             tangents.resize(array_length * 4);
-            tangents_writer = tangents.write();
+            tangents_writer = tangents.ptrw();
         }
 
         if (has_colors) {
             colors.resize(array_length);
-            colors_writer = colors.write();
+            colors_writer = colors.ptrw();
         }
 
         if (has_bones) {
             bones.resize(array_length * 4);
-            bones_writer = bones.write();
+            bones_writer = bones.ptrw();
         }
 
         if (has_weights) {
             weights.resize(array_length * 4);
-            weights_writer = weights.write();
+            weights_writer = weights.ptrw();
         }
 
         if (has_uvs) {
             uvs.resize(array_length);
-            uvs_writer = uvs.write();
+            uvs_writer = uvs.ptrw();
         }
 
         if (has_uv2s) {
             uv2s.resize(array_length);
-            uv2s_writer = uv2s.write();
+            uv2s_writer = uv2s.ptrw();
         }
     }
 
@@ -120,7 +120,7 @@ struct SurfaceFiller {
 
         SlicerFace face = faces_reader[face_idx];
 
-        vertexes_writer[set_idx] = face.vertex[idx_offset];
+        vertices_writer[set_idx] = face.vertex[idx_offset];
 
         if (has_normals) {
             normals_writer[set_idx] = face.normal[idx_offset];
@@ -166,7 +166,7 @@ struct SurfaceFiller {
      * surface
     */
     void add_to_mesh(ArrayMesh &mesh, Ref<Material> material) {
-        arrays[Mesh::ARRAY_VERTEX] = vertexes;
+        arrays[Mesh::ARRAY_VERTEX] = vertices;
 
         if (has_normals)
             arrays[Mesh::ARRAY_NORMAL] = normals;
@@ -191,31 +191,6 @@ struct SurfaceFiller {
 
         mesh.add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, arrays);
         mesh.surface_set_material(mesh.get_surface_count() - 1, material);
-    }
-
-    ~SurfaceFiller() {
-        vertexes_writer.release();
-
-        if (has_normals)
-            normals_writer.release();
-
-        if (has_tangents)
-            tangents_writer.release();
-        
-        if (has_colors)
-            colors_writer.release();
-        
-        if (has_bones)
-            bones_writer.release();
-        
-        if (has_weights)
-            weights_writer.release();
-
-        if (has_uvs)
-            uvs_writer.release();
-        
-        if (has_uv2s)
-            uv2s_writer.release();
     }
 };
 

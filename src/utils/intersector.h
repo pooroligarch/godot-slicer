@@ -19,9 +19,9 @@ namespace Intersector {
 
     struct SplitResult {
         Ref<Material> material;
-        PoolVector<SlicerFace> upper_faces;
-        PoolVector<SlicerFace> lower_faces;
-        PoolVector<Vector3> intersection_points;
+        Vector<SlicerFace> upper_faces;
+        Vector<SlicerFace> lower_faces;
+        Vector<Vector3> intersection_points;
 
         void reset() {
             upper_faces.resize(0);

@@ -5,7 +5,7 @@
  * Creates a new surface composed of the uncut faces that were above the plane and the new faces generated
  * from the cut faces that fell on the plane
 */
-void create_surface(const PoolVector<SlicerFace> &faces, const Ref<Material> material, ArrayMesh &mesh) {
+void create_surface(const Vector<SlicerFace> &faces, const Ref<Material> material, ArrayMesh &mesh) {
     if (faces.size() == 0) {
         return;
     }
@@ -23,7 +23,7 @@ void create_surface(const PoolVector<SlicerFace> &faces, const Ref<Material> mat
  * Create a new surface of the cross section faces. This should be called twice: once for the upper_mesh
  * and again for the lower_mesh
 */
-void create_cross_section_surface(const PoolVector<SlicerFace> &faces, const Ref<Material> material, ArrayMesh &mesh, bool is_upper) {
+void create_cross_section_surface(const Vector<SlicerFace> &faces, const Ref<Material> material, ArrayMesh &mesh, bool is_upper) {
     if (faces.size() == 0) {
         return;
     }
@@ -52,8 +52,8 @@ void create_cross_section_surface(const PoolVector<SlicerFace> &faces, const Ref
  * Creates either an upper or lower half of the sliced mesh
 */
 Mesh* create_mesh_half(
-    const PoolVector<Intersector::SplitResult> &surface_splits,
-    const PoolVector<SlicerFace> &cross_section_faces,
+    const Vector<Intersector::SplitResult> &surface_splits,
+    const Vector<SlicerFace> &cross_section_faces,
     Ref<Material> cross_section_material,
     bool is_upper
 ) {
@@ -88,7 +88,7 @@ void SlicedMesh::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "lower_mesh", PROPERTY_HINT_RESOURCE_TYPE, "Mesh"), "set_lower_mesh", "get_lower_mesh");
 }
 
-SlicedMesh::SlicedMesh(const PoolVector<Intersector::SplitResult> &surface_splits, const PoolVector<SlicerFace> &cross_section_faces, const Ref<Material> cross_section_material) {
+SlicedMesh::SlicedMesh(const Vector<Intersector::SplitResult> &surface_splits, const Vector<SlicerFace> &cross_section_faces, const Ref<Material> cross_section_material) {
     upper_mesh = Ref<Mesh>(create_mesh_half(surface_splits, cross_section_faces, cross_section_material, true));
     lower_mesh = Ref<Mesh>(create_mesh_half(surface_splits, cross_section_faces, cross_section_material, false));
 }

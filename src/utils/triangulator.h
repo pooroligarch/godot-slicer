@@ -16,7 +16,7 @@ namespace Triangulator {
     /**
      * Uses a monotone chain algorithm to generate the faces of a convex hull from a set of points
     */
-    PoolVector<SlicerFace> monotone_chain(const PoolVector<Vector3> &interception_points, Vector3 plane_normal);
+    Vector<SlicerFace> monotone_chain(const Vector<Vector3> &interception_points, Vector3 plane_normal);
 } // Triangulator
 
 

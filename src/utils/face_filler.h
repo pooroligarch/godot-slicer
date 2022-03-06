@@ -14,63 +14,63 @@ _FORCE_INLINE_ Vector3 snap_vertex(Vector3 v) {
  * maintaining info about things such as normals and uvs etc.
 */
 struct FaceFiller {
-    PoolVector<SlicerFace>::Write faces_writer;
-    PoolVector<Vector3>::Read vertices_reader;
+    SlicerFace *faces_writer;
+    const Vector3 *vertices_reader;
 
     bool has_normals;
-    PoolVector<Vector3>::Read normals_reader;
+    const Vector3 *normals_reader;
 
     bool has_tangents;
-    PoolVector<real_t>::Read tangents_reader;
+    const real_t *tangents_reader;
 
     bool has_colors;
-    PoolVector<Color>::Read colors_reader;
+    const Color *colors_reader;
 
     bool has_bones;
-    PoolVector<real_t>::Read bones_reader;
+    const real_t *bones_reader;
 
     bool has_weights;
-    PoolVector<real_t>::Read weights_reader;
+    const real_t *weights_reader;
 
     bool has_uvs;
-    PoolVector<Vector2>::Read uvs_reader;
+    const Vector2 *uvs_reader;
 
     bool has_uv2s;
-    PoolVector<Vector2>::Read uv2s_reader;
+    const Vector2 *uv2s_reader;
 
     // Yuck. What an eye sore this constructor is
-    FaceFiller(PoolVector<SlicerFace> &faces, const Array &surface_arrays) {
-        faces_writer = faces.write();
+    FaceFiller(Vector<SlicerFace> &faces, const Array &surface_arrays) {
+        faces_writer = faces.ptrw();
 
-        PoolVector<Vector3> vertices = surface_arrays[Mesh::ARRAY_VERTEX];
-        vertices_reader = vertices.read();
+        Vector<Vector3> vertices = surface_arrays[Mesh::ARRAY_VERTEX];
+        vertices_reader = vertices.ptr();
 
-        PoolVector<Vector3> normals = surface_arrays[Mesh::ARRAY_NORMAL];
-        normals_reader = normals.read();
+        Vector<Vector3> normals = surface_arrays[Mesh::ARRAY_NORMAL];
+        normals_reader = normals.ptr();
         has_normals = normals.size() > 0 && normals.size() == vertices.size();
 
-        PoolVector<real_t> tangents = surface_arrays[Mesh::ARRAY_TANGENT];
-        tangents_reader = tangents.read();
+        Vector<real_t> tangents = surface_arrays[Mesh::ARRAY_TANGENT];
+        tangents_reader = tangents.ptr();
         has_tangents = tangents.size() > 0 && tangents.size() == vertices.size() * 4;
         
-        PoolVector<Color> colors = surface_arrays[Mesh::ARRAY_COLOR];
-        colors_reader = colors.read();
+        Vector<Color> colors = surface_arrays[Mesh::ARRAY_COLOR];
+        colors_reader = colors.ptr();
         has_colors = colors.size() > 0 && colors.size() == vertices.size();
 
-        PoolVector<real_t> bones = surface_arrays[Mesh::ARRAY_BONES];
-        bones_reader = bones.read();
+        Vector<real_t> bones = surface_arrays[Mesh::ARRAY_BONES];
+        bones_reader = bones.ptr();
         has_bones = bones.size() > 0 && bones.size() == vertices.size() * 4;
 
-        PoolVector<real_t> weights = surface_arrays[Mesh::ARRAY_WEIGHTS];
-        weights_reader = weights.read();
+        Vector<real_t> weights = surface_arrays[Mesh::ARRAY_WEIGHTS];
+        weights_reader = weights.ptr();
         has_weights = weights.size() > 0 && weights.size() == vertices.size() * 4;
 
-        PoolVector<Vector2> uvs = surface_arrays[Mesh::ARRAY_TEX_UV];
-        uvs_reader = uvs.read();
+        Vector<Vector2> uvs = surface_arrays[Mesh::ARRAY_TEX_UV];
+        uvs_reader = uvs.ptr();
         has_uvs = uvs.size() > 0 && uvs.size() == vertices.size();
 
-        PoolVector<Vector2> uv2s = surface_arrays[Mesh::ARRAY_TEX_UV2];
-        uv2s_reader = uv2s.read();
+        Vector<Vector2> uv2s = surface_arrays[Mesh::ARRAY_TEX_UV2];
+        uv2s_reader = uv2s.ptr();
         has_uv2s = uv2s.size() > 0 && uv2s.size() == vertices.size();
     }
 
@@ -144,10 +144,6 @@ struct FaceFiller {
         if (has_uv2s) {
             faces_writer[face_idx].uv2[set_offset] = uv2s_reader[lookup_idx];
         }
-    }
-
-    ~FaceFiller() {
-        faces_writer.release();
     }
 };
 

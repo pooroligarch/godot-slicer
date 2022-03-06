@@ -1,11 +1,13 @@
 #ifndef SLICER_FACE_H
 #define SLICER_FACE_H
 
-#include "core/math/face3.h"
-#include "core/math/vector2.h"
-#include "core/color.h"
-#include "core/reference.h"
-#include "scene/resources/mesh.h"
+#include "face3.h"
+#include <godot-cpp/variant/vector2.hpp>
+#include <godot-cpp/variant/color.hpp>
+
+#include <godot-cpp/classes/ref_counted.hpp>
+#include <godot-cpp/classes/mesh.hpp>
+
 #include "slicer_vector4.h"
 
 /**
@@ -47,7 +49,7 @@ struct SlicerFace : public Face3 {
      * associated with each vertex and can handle both indexed and non indexed vertex
      * arrays
     */
-    static PoolVector<SlicerFace> faces_from_surface(const Mesh &mesh, int surface_idx);
+    static Vector<SlicerFace> faces_from_surface(const Mesh &mesh, int surface_idx);
 
     /**
      * Creates a new face while using barycentric weights to interpolate UV, normal, etc
