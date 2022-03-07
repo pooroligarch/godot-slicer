@@ -42,34 +42,49 @@ struct FaceFiller {
     FaceFiller(Vector<SlicerFace> &faces, const Array &surface_arrays) {
         faces_writer = faces.ptrw();
 
-        Vector<Vector3> vertices = surface_arrays[Mesh::ARRAY_VERTEX];
+        PackedVector3Array vertices = surface_arrays[Mesh::ARRAY_VERTEX];
         vertices_reader = vertices.ptr();
 
-        Vector<Vector3> normals = surface_arrays[Mesh::ARRAY_NORMAL];
+        PackedVector3Array normals = surface_arrays[Mesh::ARRAY_NORMAL];
         normals_reader = normals.ptr();
         has_normals = normals.size() > 0 && normals.size() == vertices.size();
 
-        Vector<real_t> tangents = surface_arrays[Mesh::ARRAY_TANGENT];
+        #ifdef REAL_T_IS_DOUBLE
+        PackedFloat64Array tangents;
+        #else
+        PackedFloat32Array tangents;
+        #endif
+        tangents = surface_arrays[Mesh::ARRAY_TANGENT];
         tangents_reader = tangents.ptr();
         has_tangents = tangents.size() > 0 && tangents.size() == vertices.size() * 4;
         
-        Vector<Color> colors = surface_arrays[Mesh::ARRAY_COLOR];
+        PackedColorArray colors = surface_arrays[Mesh::ARRAY_COLOR];
         colors_reader = colors.ptr();
         has_colors = colors.size() > 0 && colors.size() == vertices.size();
 
-        Vector<real_t> bones = surface_arrays[Mesh::ARRAY_BONES];
+        #ifdef REAL_T_IS_DOUBLE
+        PackedFloat64Array bones;
+        #else
+        PackedFloat32Array bones;
+        #endif
+        bones = surface_arrays[Mesh::ARRAY_BONES];
         bones_reader = bones.ptr();
         has_bones = bones.size() > 0 && bones.size() == vertices.size() * 4;
 
-        Vector<real_t> weights = surface_arrays[Mesh::ARRAY_WEIGHTS];
+        #ifdef REAL_T_IS_DOUBLE
+        PackedFloat64Array weights;
+        #else
+        PackedFloat32Array weights;
+        #endif
+        weights = surface_arrays[Mesh::ARRAY_WEIGHTS];
         weights_reader = weights.ptr();
         has_weights = weights.size() > 0 && weights.size() == vertices.size() * 4;
 
-        Vector<Vector2> uvs = surface_arrays[Mesh::ARRAY_TEX_UV];
+        PackedVector2Array uvs = surface_arrays[Mesh::ARRAY_TEX_UV];
         uvs_reader = uvs.ptr();
         has_uvs = uvs.size() > 0 && uvs.size() == vertices.size();
 
-        Vector<Vector2> uv2s = surface_arrays[Mesh::ARRAY_TEX_UV2];
+        PackedVector2Array uv2s = surface_arrays[Mesh::ARRAY_TEX_UV2];
         uv2s_reader = uv2s.ptr();
         has_uv2s = uv2s.size() > 0 && uv2s.size() == vertices.size();
     }

@@ -27,7 +27,7 @@ public:
     /**
      * Slice the passed in mesh along the passed in plane, setting the interrior cut surface to the passed in material
     */
-    Ref<SlicedMesh> slice_by_plane(const Ref<Mesh> mesh, const Plane plane, const Ref<Material> cross_section_material);
+    Ref<SlicedMesh> slice_by_plane(const Ref<ArrayMesh> mesh, const Plane plane, const Ref<Material> cross_section_material);
 
     /**
      * Generates a plane based on the given position and normal and perform a cut along that plane

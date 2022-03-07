@@ -1,8 +1,10 @@
 #ifndef SLICER_VECTOR4_H
 #define SLICER_VECTOR4_H
 
-#include "core/math/math_funcs.h"
-#include "core/string/ustring.h"
+//#include "core/math/math_funcs.h"
+#include <godot_cpp/core/math.hpp>
+//#include "core/string/ustring.h"
+#include <godot_cpp/variant/string.hpp>
 
 /**
  * Godot does not currently have a 4 dimensional Vector class so we just
@@ -57,7 +59,7 @@ struct SlicerVector4 {
 	}
 
 	operator String() const {
-        return (rtos(x) + ", " + rtos(y) + ", " + rtos(z), + ", " + rtos(w));
+        return (String::num(x) + ", " + String::num(y) + ", " + String::num(z), + ", " + String::num(w));
     }
 
 	_FORCE_INLINE_ SlicerVector4(real_t p_x, real_t p_y, real_t p_z, real_t p_w) {

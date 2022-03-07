@@ -3,6 +3,8 @@
 
 #include "slicer_face.h"
 
+#include <godot_cpp/classes/material.hpp>
+
 /**
  * Contains functions related to finding intersection points
  * on SlicerFaces

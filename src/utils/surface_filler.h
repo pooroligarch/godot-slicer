@@ -3,6 +3,8 @@
 
 #include "slicer_face.h"
 
+#include <godot_cpp/classes/array_mesh.hpp>
+
 /**
  * The inverse of FaceFiller, this struct is responsible for taking
  * SlicerFaces and serializing them back into vertex arrays for Godot
@@ -20,28 +22,40 @@ struct SurfaceFiller {
     const SlicerFace *faces_reader;
     Array arrays;
 
-    Vector<Vector3> vertices;
+    PackedVector3Array vertices;
     Vector3 *vertices_writer;
 
-    Vector<Vector3> normals;
+    PackedVector3Array normals;
     Vector3 *normals_writer;
 
-    Vector<real_t> tangents;
+    #ifdef REAL_T_IS_DOUBLE // this is why everybody loves C++
+    PackedFloat64Array tangents;
+    #else
+    PackedFloat32Array tangents;
+    #endif
     real_t *tangents_writer;
 
-    Vector<Color> colors;
+    PackedColorArray colors;
     Color *colors_writer;
 
-    Vector<real_t> bones;
+    #ifdef REAL_T_IS_DOUBLE
+    PackedFloat64Array bones;
+    #else
+    PackedFloat32Array bones;
+    #endif
     real_t *bones_writer;
 
-    Vector<real_t> weights;
+    #ifdef REAL_T_IS_DOUBLE
+    PackedFloat64Array weights;
+    #else
+    PackedFloat32Array weights;
+    #endif
     real_t *weights_writer;
 
-    Vector<Vector2> uvs;
+    PackedVector2Array uvs;
     Vector2 *uvs_writer;
 
-    Vector<Vector2> uv2s;
+    PackedVector2Array uv2s;
     Vector2 *uv2s_writer;
 
     SurfaceFiller(const Vector<SlicerFace> &faces) {

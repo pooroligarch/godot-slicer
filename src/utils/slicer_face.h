@@ -2,13 +2,18 @@
 #define SLICER_FACE_H
 
 #include "face3.h"
-#include <godot-cpp/variant/vector2.hpp>
-#include <godot-cpp/variant/color.hpp>
+#include <godot_cpp/variant/vector2.hpp>
+#include <godot_cpp/variant/color.hpp>
 
-#include <godot-cpp/classes/ref_counted.hpp>
-#include <godot-cpp/classes/mesh.hpp>
+#include <godot_cpp/classes/ref_counted.hpp>
+#include <godot_cpp/classes/mesh.hpp>
+#include <godot_cpp/classes/array_mesh.hpp>
+
+#include <godot_cpp/templates/vector.hpp>
 
 #include "slicer_vector4.h"
+
+using namespace godot;
 
 /**
  * Godot's Face3 only keeps track of a mesh's vertexes but we want to keep track
@@ -49,7 +54,7 @@ struct SlicerFace : public Face3 {
      * associated with each vertex and can handle both indexed and non indexed vertex
      * arrays
     */
-    static Vector<SlicerFace> faces_from_surface(const Mesh &mesh, int surface_idx);
+    static Vector<SlicerFace> faces_from_surface(const ArrayMesh &mesh, int surface_idx);
 
     /**
      * Creates a new face while using barycentric weights to interpolate UV, normal, etc
