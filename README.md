@@ -7,16 +7,18 @@ A port of [Ezy-Slicer](https://github.com/DavidArayan/ezy-slice) for the [Godot 
 Built as a Godot extension in C++, Slicer is a port of [David Arayan's Ezy-Slicer](https://github.com/DavidArayan/ezy-slice) Unity plugin (who deserves all credit). It allows for the dynamic slicing of convex meshes along a plane. Built against Godot version 4.0 alpha.
 
 ## Installing
-The new extension system doesn't have official documentation yet, but [this blog post](https://godotengine.org/article/introducing-gd-extensions) is about as close as it gets. Slicer can be built by cloning the repo next to [the C++ bindings](https://github.com/godotengine/godot-cpp):
+The new extension system doesn't have official documentation yet, but [this blog post](https://godotengine.org/article/introducing-gd-extensions) is about as close as it gets. Slicer can be built by cloning the repo next to [the compiled C++ bindings](https://github.com/godotengine/godot-cpp):
 
 ```bash
 git clone https://github.com/pooroligarch/godot-slicer.git slicer/
+cd slicer
 scons
 ```
-When this is done, copy the dynamic library (`libgdslicer.so`/`.dll`) and the extension manifest (`slicer.gdextension`) to your Godot project. You can modify the manifest if you want to move the library (default path is `bin/win64/`/`bin/x11`).
+
+When this is done, copy the dynamic library (`libgdslicer.so`/`.dll`) and the extension manifest (`slicer.gdextension`) to your Godot project. You can modify the manifest if you want to move the library (default path is `bin/win64/` on Windows, `bin/x11/` on Linux).
 
 ## Using
-After installing the extension a `Slicer` node will now be available under `Node3D`. A `Slicer` instance can then be used to trigger slices of `Mesh` geometry like so:
+After installing the extension a `Slicer` object will now be available. A `Slicer` instance can then be used to trigger slices of `Mesh` geometry like so:
 
 ```gdscript
 extends RigidDynamicBody3D
@@ -38,7 +40,8 @@ func _ready():
 	self.shape_owner_add_shape(owner_id, shape)
 
 func cut(plane_origin: Vector3, plane_normal: Vector3):
-	var sliced: SlicedMesh = $Slicer.slice($MeshInstance.mesh, self.transform, plane_origin, plane_normal, cross_section_material)
+	var slicer = Slicer.new()
+	var sliced: SlicedMesh = slicer.slice($MeshInstance.mesh, self.transform, plane_origin, plane_normal, cross_section_material)
 
     if not sliced:
         print("No slice occurred")
