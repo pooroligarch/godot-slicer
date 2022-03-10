@@ -16,20 +16,15 @@ void ortho_normalize(Vector3 &normal, Vector3 &tangent) {
 
 Vector<SlicerFace> parse_mesh_arrays(const ArrayMesh &mesh, int surface_idx, bool is_index_array) {
     Vector<SlicerFace> faces;
-    WARN_PRINT("face array created");
     int vert_count = is_index_array ? mesh.surface_get_array_index_len(surface_idx) : mesh.surface_get_array_len(surface_idx);
     if (vert_count == 0 || vert_count % 3 != 0) {
         return faces;
     }
-    WARN_PRINT("vertex count checked");
 
     faces.resize(vert_count / 3);
-    WARN_PRINT("face array resized");
 
     Array arrays = mesh.surface_get_arrays(surface_idx);
-    WARN_PRINT("surface arrays copied");
     FaceFiller filler(faces, arrays);
-    WARN_PRINT("face filler created");
 
     if (is_index_array) {
         PackedInt32Array indices;
@@ -44,7 +39,6 @@ Vector<SlicerFace> parse_mesh_arrays(const ArrayMesh &mesh, int surface_idx, boo
             filler.fill(i, i);
         }
     }
-    WARN_PRINT("faces filled");
 
     return faces;
 }
@@ -55,14 +49,12 @@ Vector<SlicerFace> SlicerFace::faces_from_surface(const ArrayMesh &mesh, int sur
     if (mesh.surface_get_primitive_type(surface_idx) != Mesh::PRIMITIVE_TRIANGLES) {
         return Vector<SlicerFace>();
     }
-    WARN_PRINT("mesh is a triangle mesh");
 
     if (mesh.surface_get_format(surface_idx) & Mesh::ARRAY_FORMAT_INDEX) {
         return parse_mesh_arrays(mesh, surface_idx, true);
     } else {
         return parse_mesh_arrays(mesh, surface_idx, false);
     }
-    WARN_PRINT("mesh arrays parsed");
 }
 
 SlicerFace SlicerFace::sub_face(Vector3 a, Vector3 b, Vector3 c) const {

@@ -41,16 +41,13 @@ struct FaceFiller {
     // Yuck. What an eye sore this constructor is
     FaceFiller(Vector<SlicerFace> &faces, const Array &surface_arrays) {
         faces_writer = faces.ptrw();
-        WARN_PRINT("face writer created");
 
         PackedVector3Array vertices = surface_arrays[Mesh::ARRAY_VERTEX];
         vertices_reader = vertices.ptr();
-        WARN_PRINT("vertex reader created");
 
         PackedVector3Array normals = surface_arrays[Mesh::ARRAY_NORMAL];
         normals_reader = normals.ptr();
         has_normals = normals.size() > 0 && normals.size() == vertices.size();
-        WARN_PRINT("normal reader created");
 
         #ifdef REAL_T_IS_DOUBLE
         PackedFloat64Array tangents;
@@ -60,7 +57,6 @@ struct FaceFiller {
         tangents = surface_arrays[Mesh::ARRAY_TANGENT];
         tangents_reader = tangents.ptr();
         has_tangents = tangents.size() > 0 && tangents.size() == vertices.size() * 4;
-        WARN_PRINT("tangent reader created");
         
         if (!surface_arrays[Mesh::ARRAY_COLOR]) {
         has_colors = false;
@@ -69,7 +65,6 @@ struct FaceFiller {
         colors_reader = colors.ptr();
         has_colors = colors.size() > 0 && colors.size() == vertices.size();
         }
-        WARN_PRINT("color reader created");
 
         if (!surface_arrays[Mesh::ARRAY_BONES]) {
         has_bones = false;
@@ -83,7 +78,6 @@ struct FaceFiller {
         bones_reader = bones.ptr();
         has_bones = bones.size() > 0 && bones.size() == vertices.size() * 4;
         }
-        WARN_PRINT("bone reader created");
 
         if (!surface_arrays[Mesh::ARRAY_WEIGHTS]) {
         has_weights = false;
@@ -97,12 +91,10 @@ struct FaceFiller {
         weights_reader = weights.ptr();
         has_weights = weights.size() > 0 && weights.size() == vertices.size() * 4;
         }
-        WARN_PRINT("weight reader created");
 
         PackedVector2Array uvs = surface_arrays[Mesh::ARRAY_TEX_UV];
         uvs_reader = uvs.ptr();
         has_uvs = uvs.size() > 0 && uvs.size() == vertices.size();
-        WARN_PRINT("uv reader created");
 
         if (!surface_arrays[Mesh::ARRAY_TEX_UV2]) {
         has_uv2s = false;
@@ -111,7 +103,6 @@ struct FaceFiller {
         uv2s_reader = uv2s.ptr();
         has_uv2s = uv2s.size() > 0 && uv2s.size() == vertices.size();
         }
-        WARN_PRINT("uv2 reader created");
     }
 
     /**
