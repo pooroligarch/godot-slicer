@@ -54,7 +54,7 @@ struct SlicerFace : public Face3 {
      * associated with each vertex and can handle both indexed and non indexed vertex
      * arrays
     */
-    static Vector<SlicerFace> faces_from_surface(const ArrayMesh &mesh, int surface_idx);
+    static std::vector<SlicerFace> faces_from_surface(const ArrayMesh &mesh, int surface_idx);
 
     /**
      * Creates a new face while using barycentric weights to interpolate UV, normal, etc
