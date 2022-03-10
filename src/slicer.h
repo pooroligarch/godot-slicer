@@ -17,8 +17,8 @@ using namespace godot;
  * Helper for cutting a convex mesh along a plane and returning
  * two new meshes representing both sides of the cut
 */
-class Slicer : public Node3D {
-    GDCLASS(Slicer, Node3D);
+class Slicer : public RefCounted {
+    GDCLASS(Slicer, RefCounted);
 
 protected:
     static void _bind_methods();
