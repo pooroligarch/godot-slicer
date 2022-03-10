@@ -14,7 +14,7 @@ _FORCE_INLINE_ Vector3 snap_vertex(Vector3 v) {
  * maintaining info about things such as normals and uvs etc.
 */
 struct FaceFiller {
-    SlicerFace *faces;
+    SlicerFace *faces_writer;
     const Vector3 *vertices_reader;
 
     bool has_normals;
@@ -39,8 +39,8 @@ struct FaceFiller {
     const Vector2 *uv2s_reader;
 
     // Yuck. What an eye sore this constructor is
-    FaceFiller(std::vector<SlicerFace> &faces, const Array &surface_arrays) {
-        //faces = faces.ptrw();
+    FaceFiller(Vector<SlicerFace> &faces, const Array &surface_arrays) {
+        faces_writer = faces.ptrw();
 
         PackedVector3Array vertices = surface_arrays[Mesh::ARRAY_VERTEX];
         vertices_reader = vertices.ptr();
@@ -106,23 +106,23 @@ struct FaceFiller {
         int set_offset = set_idx % 3;
 
         if (set_offset == 0) {
-            faces[face_idx].has_normals = has_normals;
-            faces[face_idx].has_tangents = has_tangents;
-            faces[face_idx].has_colors = has_colors;
-            faces[face_idx].has_bones = has_bones;
-            faces[face_idx].has_weights = has_weights;
-            faces[face_idx].has_uvs = has_uvs;
-            faces[face_idx].has_uv2s = has_uv2s;
+            faces_writer[face_idx].has_normals = has_normals;
+            faces_writer[face_idx].has_tangents = has_tangents;
+            faces_writer[face_idx].has_colors = has_colors;
+            faces_writer[face_idx].has_bones = has_bones;
+            faces_writer[face_idx].has_weights = has_weights;
+            faces_writer[face_idx].has_uvs = has_uvs;
+            faces_writer[face_idx].has_uv2s = has_uv2s;
         }
 
-        faces[face_idx].vertex[set_offset] = snap_vertex(vertices_reader[lookup_idx]);
+        faces_writer[face_idx].vertex[set_offset] = snap_vertex(vertices_reader[lookup_idx]);
 
         if (has_normals) {
-            faces[face_idx].normal[set_offset] = normals_reader[lookup_idx];
+            faces_writer[face_idx].normal[set_offset] = normals_reader[lookup_idx];
         }
 
         if (has_tangents) {
-            faces[face_idx].tangent[set_offset] = SlicerVector4(
+            faces_writer[face_idx].tangent[set_offset] = SlicerVector4(
                 tangents_reader[lookup_idx * 4],
                 tangents_reader[lookup_idx * 4 + 1],
                 tangents_reader[lookup_idx * 4 + 2],
@@ -131,11 +131,11 @@ struct FaceFiller {
         }
 
         if (has_colors) {
-            faces[face_idx].color[set_offset] = colors_reader[lookup_idx];
+            faces_writer[face_idx].color[set_offset] = colors_reader[lookup_idx];
         }
 
         if (has_bones) {
-            faces[face_idx].bones[set_offset] = SlicerVector4(
+            faces_writer[face_idx].bones[set_offset] = SlicerVector4(
                 bones_reader[lookup_idx * 4],
                 bones_reader[lookup_idx * 4 + 1],
                 bones_reader[lookup_idx * 4 + 2],
@@ -144,7 +144,7 @@ struct FaceFiller {
         }
 
         if (has_weights) {
-            faces[face_idx].weights[set_offset] = SlicerVector4(
+            faces_writer[face_idx].weights[set_offset] = SlicerVector4(
                 weights_reader[lookup_idx],
                 weights_reader[lookup_idx * 4 + 1],
                 weights_reader[lookup_idx * 4 + 2],
@@ -153,11 +153,11 @@ struct FaceFiller {
         }
 
         if (has_uvs) {
-            faces[face_idx].uv[set_offset] = uvs_reader[lookup_idx];
+            faces_writer[face_idx].uv[set_offset] = uvs_reader[lookup_idx];
         }
 
         if (has_uv2s) {
-            faces[face_idx].uv2[set_offset] = uv2s_reader[lookup_idx];
+            faces_writer[face_idx].uv2[set_offset] = uv2s_reader[lookup_idx];
         }
     }
 };

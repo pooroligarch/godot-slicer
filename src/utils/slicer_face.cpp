@@ -14,8 +14,8 @@ void ortho_normalize(Vector3 &normal, Vector3 &tangent) {
     tangent.normalize();
 }
 
-std::vector<SlicerFace> parse_mesh_arrays(const ArrayMesh &mesh, int surface_idx, bool is_index_array) {
-    std::vector<SlicerFace> faces;
+Vector<SlicerFace> parse_mesh_arrays(const ArrayMesh &mesh, int surface_idx, bool is_index_array) {
+    Vector<SlicerFace> faces;
     int vert_count = is_index_array ? mesh.surface_get_array_index_len(surface_idx) : mesh.surface_get_array_len(surface_idx);
     if (vert_count == 0 || vert_count % 3 != 0) {
         return faces;
@@ -43,11 +43,11 @@ std::vector<SlicerFace> parse_mesh_arrays(const ArrayMesh &mesh, int surface_idx
     return faces;
 }
 
-std::vector<SlicerFace> SlicerFace::faces_from_surface(const ArrayMesh &mesh, int surface_idx) {
+Vector<SlicerFace> SlicerFace::faces_from_surface(const ArrayMesh &mesh, int surface_idx) {
     // Slicer functionality really only makes sense in the context of a mesh composed of
     // triangles
     if (mesh.surface_get_primitive_type(surface_idx) != Mesh::PRIMITIVE_TRIANGLES) {
-        return std::vector<SlicerFace>();
+        return Vector<SlicerFace>();
     }
 
     if (mesh.surface_get_format(surface_idx) & Mesh::ARRAY_FORMAT_INDEX) {

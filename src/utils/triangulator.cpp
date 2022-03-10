@@ -41,7 +41,7 @@ namespace Triangulator {
     // But as this is primarily a learning exercise (and because monotone chain has a slightly different time complexity
     // and our need to support uv mappings and such) let's try to implement this ourselves (or, more accurately, copy
     // it over from Ezy-Slice)
-    Vector<SlicerFace> monotone_chain(const PackedVector3Array &interception_points, Vector3 plane_normal) {
+    Vector<SlicerFace> monotone_chain(const Vector<Vector3> &interception_points, Vector3 plane_normal) {
         // We'll be using the monotone_chain algorithm to try to get a convex hull from our assortment of
         // interception_points along our plane
 
