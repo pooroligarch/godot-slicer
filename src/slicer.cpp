@@ -29,13 +29,13 @@ Ref<SlicedMesh> Slicer::slice_by_plane(const Ref<ArrayMesh> mesh, const Plane pl
 
         WARN_PRINT("material set");
 
-        std::vector<SlicerFace> faces = SlicerFace::faces_from_surface(**mesh, i);
-        //const SlicerFace *faces_reader = faces.ptr();
+        Vector<SlicerFace> faces = SlicerFace::faces_from_surface(**mesh, i);
+        const SlicerFace *faces_reader = faces.ptr();
 
         WARN_PRINT("faces copied");
 
         for (int j = 0; j < faces.size(); j++) {
-            Intersector::split_face_by_plane(plane, faces[j], results);
+            Intersector::split_face_by_plane(plane, faces_reader[j], results);
         }
 
         WARN_PRINT("intersection computed");
