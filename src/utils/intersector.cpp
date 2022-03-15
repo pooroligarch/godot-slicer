@@ -212,8 +212,8 @@ namespace Intersector {
 
         Vector3 intersection_point_1;
         Vector3 intersection_point_2;
-        if (!line_intersects(plane, on_same_side_1, on_lone_side, intersection_point_1) ||
-            !line_intersects(plane, on_same_side_2, on_lone_side, intersection_point_2)) {
+        if (!plane.intersects_segment(on_same_side_1, on_lone_side, &intersection_point_1) ||
+            !plane.intersects_segment(on_same_side_2, on_lone_side, &intersection_point_2)) {
             ERR_FAIL();
         }
 
