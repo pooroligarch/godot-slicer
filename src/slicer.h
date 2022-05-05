@@ -25,9 +25,14 @@ protected:
 
 public:
     /**
-     * Slice the passed in mesh along the passed in plane, setting the interrior cut surface to the passed in material
+     * Slice the passed in mesh along the passed in plane, setting the interior cut surface to the passed in material
     */
     Ref<SlicedMesh> slice_by_plane(const Ref<ArrayMesh> mesh, const Plane plane, const Ref<Material> cross_section_material);
+
+    /**
+     * Slice the passed in mesh sequentially along every plane in the array
+    */
+    Ref<SlicedMesh> slice_by_multiple_planes(const Ref<ArrayMesh> mesh, const Array planes, const Ref<Material> cross_section_material);
 
     /**
      * Generates a plane based on the given position and normal and perform a cut along that plane
