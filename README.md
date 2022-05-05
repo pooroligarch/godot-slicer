@@ -2,6 +2,7 @@
 
 A port of [Ezy-Slicer](https://github.com/DavidArayan/ezy-slice) for the [Godot game engine](https://godotengine.org/). Updated for Godot 4.0 ([original by CJ DiMaggio](https://github.com/cj-dimaggio/godot-slicer)).
 
+## Important: Slicer is currently broken because of engine bug [godot-cpp#751](https://github.com/godotengine/godot-cpp/issues/751).
 
 ## About
 Built as a Godot extension in C++, Slicer is a port of [David Arayan's Ezy-Slicer](https://github.com/DavidArayan/ezy-slice) Unity plugin (who deserves all credit). It allows for the dynamic slicing of convex meshes along a plane. Built against Godot version 4.0 alpha.
