@@ -3,7 +3,7 @@
 
 #include "slicer.h"
 
-void register_slicer_types();
-void unregister_slicer_types();
+void initialize_slicer_module();
+void uninitialize_slicer_module();
 
 #endif // ! SLICER_REGISTER_TYPES_H

@@ -8,12 +8,19 @@
 
 using namespace godot;
 
-void register_slicer_types() {
-    ClassDB::register_class<Slicer>();
-    ClassDB::register_class<SlicedMesh>();
+void initialize_slicer_module(ModuleInitializationLevel p_level) {
+	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
+		return;
+	}
+
+	ClassDB::register_class<Slicer>();
+	ClassDB::register_class<SlicedMesh>();
 }
 
-void unregister_slicer_types() {
+void uninitialize_slicer_module(ModuleInitializationLevel p_level) {
+	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
+		return;
+	}
 }
 
 extern "C" {
@@ -23,8 +30,8 @@ extern "C" {
 GDNativeBool GDN_EXPORT slicer_library_init(const GDNativeInterface *p_interface, const GDNativeExtensionClassLibraryPtr p_library, GDNativeInitialization *r_initialization) {
 	godot::GDExtensionBinding::InitObject init_obj(p_interface, p_library, r_initialization);
 
-	init_obj.register_scene_initializer(register_slicer_types);
-	init_obj.register_scene_terminator(unregister_slicer_types);
+	init_obj.register_initializer(initialize_slicer_module);
+	init_obj.register_terminator(uninitialize_slicer_module);
 
 	return init_obj.init();
 }
